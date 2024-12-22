@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, HTTPException, Depends
 from app.model import SentimentRequest, SentimentResponse
-from app.auth import authenticate_user
+from app.services.auth import authenticate_user
 from utils.sentiment_analysis import analyze_sentiment
 import pandas as pd
 from datetime import datetime
