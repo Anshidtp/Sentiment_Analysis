@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 pandas
-vaderSentiment
 pyjwt
 python-multipart
 transformers
+torch
