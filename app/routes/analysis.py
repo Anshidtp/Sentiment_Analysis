@@ -7,6 +7,9 @@ router = APIRouter()
 
 @router.post("/upload", dependencies=[Depends(verify_jwt_token)])
 def upload_file(file: UploadFile = File(...)) -> List[dict]:
+    print("File received:", file.filename)
+    if file.content_type != "text/csv":
+        raise HTTPException(status_code=400, detail="Invalid file type. Please upload a CSV file.")
     try:
         return analyze_file(file)
     except Exception as e:
