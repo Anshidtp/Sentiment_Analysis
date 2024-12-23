@@ -1,6 +1,8 @@
-# Sentiment_Analysis
+# Sentiment Analysis System
 
 This project implements a **Sentiment Analysis Web Application** using a FastAPI backend and a React frontend. Users can upload CSV files containing text data to analyze their sentiments, and the application will display the sentiment distribution as bar and pie charts.
+
+![Demo](https://github.com/Anshidtp/Sentiment_Analysis/blob/main/sample/screen-capture.webm)
 
 
 ## Technologies Used
@@ -9,7 +11,7 @@ This project implements a **Sentiment Analysis Web Application** using a FastAPI
 - FastAPI
 - Hugging Face Transformers
 - Pandas
-- JWT Authentication
+- JWT 
 
 ### Frontend:
 - React
