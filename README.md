@@ -2,7 +2,7 @@
 
 This project implements a **Sentiment Analysis Web Application** using a FastAPI backend and a React frontend. Users can upload CSV files containing text data to analyze their sentiments, and the application will display the sentiment distribution as bar and pie charts.
 
-![Demo](https://github.com/Anshidtp/Sentiment_Analysis/blob/main/sample/screen-capture.webm)
+![Demo](https://github.com/Anshidtp/Sentiment_Analysis/blob/main/sample/sample_video.gif)
 
 
 ## Technologies Used
@@ -21,7 +21,8 @@ This project implements a **Sentiment Analysis Web Application** using a FastAPI
 ## Features
 
  - **JWT Authentication**: Secure API endpoints.
- - **Sentiment Analysis**: Uses the **"tabularisai/multilingual-sentiment-analysis"**  pre-trained   model from Hugging Face for analyzing sentiments.
+ - **Sentiment Analysis**: Uses the **"tabularisai/multilingual-sentiment-analysis"**  pre-trained   model from Hugging Face for 
+    analyzing sentiments.
  - **File Upload**: Users can upload CSV files from the web interface.
  - **Visualization**: Sentiment distribution is displayed as bar and pie charts using Chart.js.
 
