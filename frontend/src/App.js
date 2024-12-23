@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Sentiment Analysis Portal</h1>
+      <h1>Sentiment Analysis System</h1>
       
       <FileUpload onFileUpload={handleFileUpload} />
       

@@ -18,6 +18,15 @@ This project implements a **Sentiment Analysis Web Application** using a FastAPI
 - Chart.js
 - Axios
 
+## Features
+
+ - **JWT Authentication**: Secure API endpoints.
+ - **Sentiment Analysis**: Uses the **"tabularisai/multilingual-sentiment-analysis"**  pre-trained   model from Hugging Face for analyzing sentiments.
+ - **File Upload**: Users can upload CSV files from the web interface.
+ - **Visualization**: Sentiment distribution is displayed as bar and pie charts using Chart.js.
+
+
+
 ## Installation and Setup
 
 ### Backend:
