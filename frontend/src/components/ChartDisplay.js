@@ -1,4 +1,7 @@
+// src/components/ChartDisplay.js
 import React, { useState } from "react";
+import { motion } from 'framer-motion';
+import { BarChart3, PieChart } from 'lucide-react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,7 +26,7 @@ ChartJS.register(
 );
 
 const ChartDisplay = ({ data }) => {
-  const [selectedChart, setSelectedChart] = useState("Bar"); // State for chart selection
+  const [selectedChart, setSelectedChart] = useState("Bar");
 
   // Calculate sentiment distribution
   const sentiments = data.reduce(
@@ -42,20 +45,22 @@ const ChartDisplay = ({ data }) => {
     datasets: [
       {
         label: "Sentiment Distribution",
-        data: Object.values(sentiments).map((count) => ((count / totalEntries) * 100).toFixed(2)),
+        data: Object.values(sentiments).map((count) => 
+          ((count / totalEntries) * 100).toFixed(2)
+        ),
         backgroundColor: [
-          "rgba(75, 192, 192, 0.6)", // teal
-          "rgba(255, 99, 132, 0.6)", // red
-          "rgba(54, 162, 235, 0.6)", // blue
-          "rgba(255, 206, 86, 0.6)", // yellow
-          "rgba(153, 102, 255, 0.6)" // purple
+          "rgba(139, 92, 246, 0.6)", // purple (matching theme)
+          "rgba(236, 72, 153, 0.6)", // pink
+          "rgba(99, 102, 241, 0.6)", // indigo
+          "rgba(14, 165, 233, 0.6)", // sky
+          "rgba(168, 85, 247, 0.6)"  // violet
         ],
         borderColor: [
-          "rgba(75, 192, 192, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(153, 102, 255, 1)"
+          "rgba(139, 92, 246, 1)",
+          "rgba(236, 72, 153, 1)",
+          "rgba(99, 102, 241, 1)",
+          "rgba(14, 165, 233, 1)",
+          "rgba(168, 85, 247, 1)"
         ],
         borderWidth: 1
       }
@@ -72,7 +77,13 @@ const ChartDisplay = ({ data }) => {
       },
       title: {
         display: true,
-        text: `Sentiment Distribution (${selectedChart} Chart)`
+        text: `Sentiment Distribution (${selectedChart} Chart)`,
+        font: {
+          size: 16,
+          family: "'Inter', sans-serif",
+          weight: '600'
+        },
+        color: '#1f2937' // gray-800
       },
       tooltip: {
         callbacks: {
@@ -86,34 +97,90 @@ const ChartDisplay = ({ data }) => {
     },
     scales: selectedChart === "Bar" ? {
       y: {
-        beginAtZero: true
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(107, 114, 128, 0.1)' // Lighter grid lines
+        },
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif"
+          }
+        }
+      },
+      x: {
+        grid: {
+          display: false // Remove vertical grid lines
+        },
+        ticks: {
+          font: {
+            family: "'Inter', sans-serif"
+          }
+        }
       }
     } : {}
   };
 
   return (
-    <div className="p-4 flex flex-col md:flex-row items-start">
-      {/* Dropdown to select chart type */}
-      <div className="mb-6 md:mb-0 md:mr-6">
-        <select
-          value={selectedChart}
-          onChange={(e) => setSelectedChart(e.target.value)}
-          className="p-2 border rounded"
-        >
-          <option value="Bar">Bar Chart</option>
-          <option value="Pie">Pie Chart</option>
-        </select>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-2xl shadow-xl p-8 border border-purple-100"
+    >
+      <div className="flex flex-col md:flex-row items-start gap-6">
+        {/* Chart Controls */}
+        <div className="w-full md:w-auto flex items-center gap-4">
+          <h3 className="text-xl font-semibold text-gray-800">
+            Analysis Results
+          </h3>
+          <div className="relative">
+            <select
+              value={selectedChart}
+              onChange={(e) => setSelectedChart(e.target.value)}
+              className="appearance-none bg-white border border-purple-200 rounded-lg py-2 pl-4 pr-10 text-gray-700 cursor-pointer hover:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+            >
+              <option value="Bar">Bar Chart</option>
+              <option value="Pie">Pie Chart</option>
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+              {selectedChart === "Bar" ? (
+                <BarChart3 className="h-4 w-4" />
+              ) : (
+                <PieChart className="h-4 w-4" />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Chart Display */}
+        <div className="w-full bg-white rounded-xl p-4" style={{ height: "400px" }}>
+          {selectedChart === "Bar" ? (
+            <Bar data={chartData} options={chartOptions} />
+          ) : (
+            <Pie data={chartData} options={chartOptions} />
+          )}
+        </div>
       </div>
 
-      {/* Chart display */}
-      <div className="flex-grow p-4 bg-white rounded shadow" style={{ width: "400px", height: "300px" }}>
-        {selectedChart === "Bar" ? (
-          <Bar data={chartData} options={chartOptions} />
-        ) : (
-          <Pie data={chartData} options={chartOptions} />
-        )}
+      {/* Summary Statistics */}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {Object.entries(sentiments).map(([sentiment, count]) => (
+          <div
+            key={sentiment}
+            className="bg-purple-50 rounded-lg p-4 border border-purple-100"
+          >
+            <h4 className="text-sm font-medium text-purple-600 mb-1">
+              {sentiment}
+            </h4>
+            <div className="text-2xl font-semibold text-gray-800">
+              {((count / totalEntries) * 100).toFixed(1)}%
+            </div>
+            <div className="text-sm text-gray-500">
+              {count} entries
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

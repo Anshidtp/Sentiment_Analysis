@@ -1,83 +1,53 @@
-import React, { useRef } from "react";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Upload, ChartBar } from 'lucide-react';
 
 const FileUpload = ({ onFileUpload }) => {
-  const fileInputRef = useRef();
-
-  const validateFile = (file) => {
-    // Check if file exists
-    if (!file) {
-      throw new Error("No file selected");
-    }
-
-    // Check file extension
-    if (!file.name.toLowerCase().endsWith('.csv')) {
-      throw new Error("Please select a CSV file");
-    }
-
-    // Check file size (e.g., max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      throw new Error("File size must be less than 5MB");
-    }
-
-    // Check if file is empty
-    if (file.size === 0) {
-      throw new Error("File is empty");
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const file = fileInputRef.current.files[0];
-
-    try {
-      validateFile(file);
-      console.log("File validation passed:", {
-        name: file.name,
-        type: file.type,
-        size: file.size
-      });
-      await onFileUpload(file);
-    } catch (error) {
-      console.error("File validation failed:", error);
-      alert(error.message);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      console.log("File selected:", {
-        name: file.name,
-        type: file.type,
-        size: file.size
-      });
-    }
+    const file = e.target.elements.file.files[0];
+    if (file) onFileUpload(file);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4">
-      <div className="flex flex-col gap-2">
-        <input
-          type="file"
-          ref={fileInputRef}
-          accept=".csv"
-          onChange={handleFileChange}
-          className="border p-2 rounded"
-        />
-        <div className="text-sm text-gray-600">
-          Accepted file type: CSV (*.csv)
-        </div>
-        <button 
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Upload
-        </button>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-xl mx-auto mb-12"
+    >
+      <div className="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <div className="mb-6">
+            <Upload className="h-12 w-12 text-purple-600" />
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Upload Your File
+          </h2>
+          <p className="text-gray-600 mb-6 text-center">
+            Drag and drop your CSV file here or click to browse
+          </p>
+          <input
+            name="file"
+            type="file"
+            accept=".csv"
+            className="block w-full text-sm text-gray-600
+            file:mr-4 file:py-3 file:px-6
+            file:rounded-full file:border-0
+            file:text-sm file:font-medium
+            file:bg-purple-600 file:text-white
+            hover:file:bg-purple-700
+            file:cursor-pointer file:transition-colors"
+          />
+          <button 
+            type="submit"
+            className="mt-6 px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-medium hover:opacity-90 transition-opacity flex items-center space-x-2 shadow-lg shadow-purple-200"
+          >
+            <ChartBar className="h-5 w-5" />
+            <span>Analyze Data</span>
+          </button>
+        </form>
       </div>
-    </form>
+    </motion.div>
   );
 };
 
